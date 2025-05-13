@@ -1,0 +1,553 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Abdullah Koudimati - Presentation</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/animate.css/4.1.1/animate.min.css"/>
+    <style>
+        body, html {
+            margin: 0;
+            padding: 0;
+            height: 100%;
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            overflow: hidden;
+            background-color: #f5f5f5;
+        }
+        
+        .slide-container {
+            height: 100vh;
+            width: 100%;
+            position: relative;
+            perspective: 1000px;
+        }
+        
+        .slide {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            display: none;
+            background: linear-gradient(135deg, #ffffff, #f0f0f0);
+            padding: 40px;
+            box-sizing: border-box;
+            box-shadow: 0 10px 50px rgba(0, 0, 0, 0.1);
+            border-radius: 15px;
+            opacity: 0;
+            transform: translateY(20px);
+            transition: opacity 0.8s ease, transform 0.8s ease;
+        }
+        
+        .slide.active {
+            display: block;
+            opacity: 1;
+            transform: translateY(0);
+        }
+        
+        .slide-content {
+            max-width: 1000px;
+            margin: 0 auto;
+            height: 100%;
+            display: flex;
+            flex-direction: column;
+            position: relative;
+            z-index: 2;
+        }
+        
+        .slide-bg {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            z-index: 1;
+            opacity: 0.02;
+            background-size: 300px;
+            background-repeat: repeat;
+            background-image: url('data:image/svg+xml;utf8,<svg xmlns="http://www.w3.org/2000/svg" width="100" height="100" viewBox="0 0 100 100"><path d="M0,0 L100,0 L100,100 L0,100 Z" fill="none" stroke="%23000" stroke-width="2"/></svg>');
+        }
+        
+        h1 {
+            font-size: 3rem;
+            margin-bottom: 30px;
+            color: #2c3e50;
+            text-shadow: 1px 1px 1px rgba(0,0,0,0.1);
+            position: relative;
+            display: inline-block;
+        }
+        
+        h1:after {
+            content: '';
+            position: absolute;
+            bottom: -10px;
+            left: 0;
+            width: 100px;
+            height: 5px;
+            background: linear-gradient(90deg, #3498db, #2980b9);
+            border-radius: 3px;
+        }
+        
+        h2 {
+            font-size: 3rem;
+            margin-bottom: 30px;
+            color: #2c3e50;
+            text-align: center;
+            text-shadow: 1px 1px 1px rgba(0,0,0,0.1);
+        }
+        
+        h3 {
+            font-size: 2.2rem;
+            margin-bottom: 30px;
+            color: #3498db;
+            text-align: center;
+        }
+        
+        ul {
+            margin-left: 20px;
+            font-size: 1.6rem;
+            line-height: 1.8;
+        }
+        
+        li {
+            margin-bottom: 20px;
+            position: relative;
+            padding-left: 15px;
+        }
+        
+        li:before {
+            content: '';
+            position: absolute;
+            left: -15px;
+            top: 12px;
+            width: 10px;
+            height: 10px;
+            background-color: #3498db;
+            border-radius: 50%;
+        }
+        
+        .mondriaan-logo {
+            width: 550px;
+            position: absolute;
+            top: 50%;
+            right: 40px;
+            transform: translateY(-50%);
+            display: block;
+            box-shadow: none;
+            border-radius: 0;
+            transition: none;
+            animation: none !important;
+        }
+        
+        .mondriaan-logo:hover {
+            transform: translateY(-50%);
+        }
+        
+        .logo-container {
+            position: relative;
+            width: 100%;
+            height: 100%;
+        }
+        
+        .bug-icon {
+            width: 80px;
+            height: 80px;
+            margin: 0 auto 20px;
+            filter: drop-shadow(0 5px 5px rgba(0,0,0,0.1));
+        }
+        
+        .two-column {
+            display: flex;
+            height: 80%;
+            gap: 60px;
+            align-items: center;
+        }
+        
+        .left-column {
+            flex: 1;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+        }
+        
+        .right-column {
+            flex: 1;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+        
+        .project-image {
+            max-width: 100%;
+            max-height: 100%;
+            border-radius: 10px;
+            object-fit: contain;
+            box-shadow: 0 15px 30px rgba(0,0,0,0.15);
+            border: 1px solid rgba(0,0,0,0.05);
+            transition: transform 0.3s ease, box-shadow 0.3s ease;
+        }
+        
+        .project-image:hover {
+            transform: scale(1.02);
+            box-shadow: 0 20px 40px rgba(0,0,0,0.2);
+        }
+        
+        .image-link {
+            position: relative;
+            display: inline-block;
+            max-width: 100%;
+            overflow: hidden;
+            border-radius: 12px;
+            transition: all 0.3s ease;
+        }
+        
+        .image-link:before {
+            content: "Click to visit website";
+            position: absolute;
+            bottom: 0;
+            left: 0;
+            width: 100%;
+            background: rgba(52, 152, 219, 0.9);
+            color: white;
+            padding: 10px 0;
+            text-align: center;
+            font-weight: bold;
+            transform: translateY(100%);
+            transition: transform 0.3s ease;
+            z-index: 2;
+        }
+        
+        .image-link:after {
+            content: "";
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            border: 4px solid #3498db;
+            border-radius: 12px;
+            opacity: 0;
+            transition: opacity 0.3s ease;
+            z-index: 1;
+        }
+        
+        .image-link:hover:before {
+            transform: translateY(0);
+        }
+        
+        .image-link:hover:after {
+            opacity: 1;
+        }
+        
+        .nav-buttons {
+            position: fixed;
+            bottom: 40px;
+            left: 50%;
+            transform: translateX(-50%);
+            display: flex;
+            gap: 20px;
+            z-index: 100;
+        }
+        
+        .nav-button {
+            background: linear-gradient(135deg, #3498db, #2980b9);
+            color: white;
+            border: none;
+            padding: 12px 25px;
+            border-radius: 30px;
+            cursor: pointer;
+            font-size: 1.1rem;
+            font-weight: bold;
+            box-shadow: 0 4px 15px rgba(52, 152, 219, 0.4);
+            transition: all 0.3s ease;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+        }
+        
+        .nav-button:hover {
+            transform: translateY(-3px);
+            box-shadow: 0 7px 20px rgba(52, 152, 219, 0.6);
+        }
+        
+        .nav-button:active {
+            transform: translateY(-1px);
+        }
+        
+        .slide-indicator {
+            position: fixed;
+            bottom: 20px;
+            width: 100%;
+            text-align: center;
+            color: #7f8c8d;
+            font-size: 1rem;
+            z-index: 100;
+        }
+        
+        .slide-dots {
+            display: flex;
+            justify-content: center;
+            gap: 10px;
+            margin-top: 15px;
+        }
+        
+        .dot {
+            width: 12px;
+            height: 12px;
+            background-color: #bdc3c7;
+            border-radius: 50%;
+            cursor: pointer;
+            transition: background-color 0.3s ease, transform 0.3s ease;
+        }
+        
+        .dot.active {
+            background-color: #3498db;
+            transform: scale(1.2);
+        }
+        
+        @keyframes fadeInUp {
+            from {
+                opacity: 0;
+                transform: translateY(20px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+        
+        .animate-content {
+            animation: fadeInUp 0.8s ease forwards;
+        }
+        
+        .slide-number {
+            position: absolute;
+            top: 20px;
+            right: 20px;
+            font-size: 5rem;
+            font-weight: bold;
+            color: rgba(0,0,0,0.03);
+            z-index: 1;
+        }
+        
+        /* SVG Animation */
+        .circle-pulse {
+            animation: pulse 2s infinite;
+        }
+        
+        @keyframes pulse {
+            0% {
+                transform: scale(1);
+                opacity: 0.8;
+            }
+            50% {
+                transform: scale(1.05);
+                opacity: 1;
+            }
+            100% {
+                transform: scale(1);
+                opacity: 0.8;
+            }
+        }
+        
+        .arrow-move {
+            animation: arrowMove 1.5s infinite;
+        }
+        
+        @keyframes arrowMove {
+            0% {
+                transform: translateX(0);
+            }
+            50% {
+                transform: translateX(5px);
+            }
+            100% {
+                transform: translateX(0);
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="slide-container">
+        <!-- Slide 1: Introduction -->
+        <div id="slide1" class="slide active">
+            <div class="slide-bg"></div>
+            <div class="slide-number">01</div>
+            <div class="slide-content">
+                <h1 class="animate-content">Introduction</h1>
+                <ul>
+                    <li class="animate-content" style="animation-delay: 0.2s">Title: "About Me"</li>
+                    <li class="animate-content" style="animation-delay: 0.4s">Keywords: ROC Mondriaan, 2nd Year, Software Development</li>
+                </ul>
+            </div>
+            <img src="roc_mondriaan_image.png" alt="ROC Mondriaan Logo" class="mondriaan-logo">
+        </div>
+
+        <!-- Slide 2: Why I Chose This Study -->
+        <div id="slide2" class="slide">
+            <div class="slide-bg"></div>
+            <div class="slide-number">02</div>
+            <div class="slide-content">
+                <div style="text-align: center; margin-bottom: 30px;">
+                    <svg width="80" height="80" viewBox="0 0 80 80" fill="none" xmlns="http://www.w3.org/2000/svg">
+                        <circle class="circle-pulse" cx="40" cy="40" r="35" fill="#3498db" opacity="0.2" />
+                        <circle cx="40" cy="40" r="30" fill="white" stroke="#3498db" stroke-width="2" />
+                        <path class="arrow-move" d="M35 30 L45 40 L35 50" stroke="#3498db" stroke-width="4" />
+                    </svg>
+                </div>
+                
+                <h2 class="animate__animated animate__fadeInDown">Why I Chose This Study</h2>
+                <h3 class="animate__animated animate__fadeIn animate__delay-1s">"Why Software Development?"</h3>
+            </div>
+        </div>
+
+        <!-- Slide 3: Example Project -->
+        <div id="slide3" class="slide">
+            <div class="slide-bg"></div>
+            <div class="slide-number">03</div>
+            <div class="slide-content">
+                <div class="two-column">
+                    <div class="left-column">
+                        <ul>
+                            <li class="animate-content">example</li>
+                            <li class="animate-content" style="animation-delay: 0.2s">Title: "Future Career Field"</li>
+                            <li class="animate-content" style="animation-delay: 0.4s">Keywords: Web Development, Programming, Creative Work</li>
+                        </ul>
+                    </div>
+                    <div class="right-column">
+                        <a href="https://akoudimati.github.io/Deadlock_new_items/spirit.html" target="_blank" class="image-link">
+                            <img src="game_image.png" alt="Game Items Project" class="project-image animate-content" style="animation-delay: 0.6s">
+                        </a>
+                    </div>
+                </div>
+            </div>
+        </div>
+        
+        <!-- Slide 4: Internship -->
+        <div id="slide4" class="slide">
+            <div class="slide-bg"></div>
+            <div class="slide-number">04</div>
+            <div class="slide-content">
+                <div class="two-column">
+                    <div class="left-column">
+                        <ul>
+                            <li class="animate-content">4: complete the study</li>
+                            <li class="animate-content" style="animation-delay: 0.2s">Titel: internship</li>
+                            <li class="animate-content" style="animation-delay: 0.4s">Keywords: places and companies</li>
+                        </ul>
+                    </div>
+                    <div class="right-column">
+                        <div class="image-container">
+                            <img src="internship.jpeg" alt="Internship Concept" class="project-image animate-content" style="animation-delay: 0.6s">
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        
+        <!-- Slide 5: Any Questions? -->
+        <div id="slide5" class="slide">
+            <div class="slide-bg"></div>
+            <div class="slide-number">05</div>
+            <div class="slide-content">
+                <div style="height: 100%; display: flex; flex-direction: column; justify-content: center; align-items: center; text-align: center;">
+                    <h1 style="font-size: 4rem; margin-bottom: 50px;" class="animate-content">Any Questions?</h1>
+                    <div class="animate-content" style="animation-delay: 0.5s; font-size: 1.8rem; color: #555;">
+                        <p>Thank you for your attention!</p>
+                        <p style="margin-top: 20px; font-style: italic;">Abdullah Koudimati</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="nav-buttons">
+        <button class="nav-button" id="prevBtn">Previous</button>
+        <button class="nav-button" id="nextBtn">Next</button>
+    </div>
+
+    <div class="slide-indicator">
+        <span id="current-slide">1</span>/<span id="total-slides">5</span>
+        <div class="slide-dots">
+            <span class="dot active" data-slide="1"></span>
+            <span class="dot" data-slide="2"></span>
+            <span class="dot" data-slide="3"></span>
+            <span class="dot" data-slide="4"></span>
+            <span class="dot" data-slide="5"></span>
+        </div>
+    </div>
+
+    <script>
+        document.addEventListener('DOMContentLoaded', function() {
+            const slides = document.querySelectorAll('.slide');
+            const totalSlides = slides.length;
+            let currentSlide = 1;
+            
+            document.getElementById('total-slides').textContent = totalSlides;
+            
+            function showSlide(slideNumber) {
+                // Hide all slides
+                slides.forEach(slide => slide.classList.remove('active'));
+                
+                // Show the selected slide
+                document.getElementById('slide' + slideNumber).classList.add('active');
+                
+                // Update indicators
+                document.getElementById('current-slide').textContent = slideNumber;
+                
+                // Update dots
+                document.querySelectorAll('.dot').forEach(dot => {
+                    dot.classList.remove('active');
+                });
+                document.querySelector(`.dot[data-slide="${slideNumber}"]`).classList.add('active');
+                
+                // Reset animations for the active slide
+                const activeSlide = document.getElementById('slide' + slideNumber);
+                const animatedElements = activeSlide.querySelectorAll('.animate-content');
+                animatedElements.forEach(element => {
+                    element.style.opacity = 0;
+                    void element.offsetWidth; // Trigger reflow
+                    element.style.opacity = null;
+                });
+            }
+            
+            document.getElementById('nextBtn').addEventListener('click', function() {
+                if (currentSlide < totalSlides) {
+                    currentSlide++;
+                    showSlide(currentSlide);
+                }
+            });
+            
+            document.getElementById('prevBtn').addEventListener('click', function() {
+                if (currentSlide > 1) {
+                    currentSlide--;
+                    showSlide(currentSlide);
+                }
+            });
+            
+            // Dot navigation
+            document.querySelectorAll('.dot').forEach(dot => {
+                dot.addEventListener('click', function() {
+                    const slideNum = parseInt(this.getAttribute('data-slide'));
+                    currentSlide = slideNum;
+                    showSlide(currentSlide);
+                });
+            });
+            
+            // Keyboard navigation
+            document.addEventListener('keydown', function(e) {
+                if (e.key === 'ArrowRight' || e.key === ' ') {
+                    if (currentSlide < totalSlides) {
+                        currentSlide++;
+                        showSlide(currentSlide);
+                    }
+                } else if (e.key === 'ArrowLeft') {
+                    if (currentSlide > 1) {
+                        currentSlide--;
+                        showSlide(currentSlide);
+                    }
+                }
+            });
+        });
+    </script>
+</body>
+</html>
